@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>FormFx v0.4 Rule Editor Example</title>
+  <link rel="stylesheet" href="../../src/editor/editor.css">
+  <style>
+    body { font-family: sans-serif; padding: 20px; display: flex; gap: 20px; }
+    .container { flex: 1; }
+    .editor-container { width: 600px; height: 800px; position: sticky; top: 20px; }
+    .form-section { background: #f0f0f0; padding: 20px; border-radius: 8px; }
+    .field { margin-bottom: 15px; }
+    .field label { display: block; font-weight: bold; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>FormFx v0.4 Example</h1>
+  <p>Rule Editor を使って動的にルールを編集・保存できます。</p>
+
+  <div class="form-section">
+    <form id="sample-form">
+      <div class="field">
+        <label for="user-type">User Type</label>
+        <select id="user-type">
+          <option value="guest">Guest</option>
+          <option value="member">Member</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+
+      <div class="field" id="admin-code-wrap">
+        <label for="admin-code">Admin Code</label>
+        <input type="text" id="admin-code">
+      </div>
+
+      <div class="field">
+        <label for="age">Age</label>
+        <input type="number" id="age" value="20">
+      </div>
+
+      <div class="field" id="parent-consent-wrap">
+        <label>
+          <input type="checkbox" id="parent-consent"> Parent Consent
+        </label>
+      </div>
+
+      <div class="field">
+        <button type="submit" id="submit-btn">Register</button>
+      </div>
+    </form>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <h3>API Controls</h3>
+    <button onclick="fx.pause()">Pause</button>
+    <button onclick="fx.resume()">Resume</button>
+    <button onclick="fx.reEvaluate()">Evaluate Now</button>
+    <button onclick="console.log(fx.exportRules())">Export to Console</button>
+  </div>
+</div>
+
+<div class="editor-container">
+  <div id="formfx-editor" style="height: 100%;"></div>
+</div>
+
+<!-- モジュールとして読み込む (開発環境前提) -->
+<script type="module">
+  import { FormFx } from '../../dist/index.js';
+
+  const rules = [
+    {
+      id: "admin-visibility",
+      if: "#user-type == 'admin'",
+      then: [{ show: "#admin-code-wrap" }, { required: "#admin-code" }],
+      else: [{ hide: "#admin-code-wrap" }]
+    },
+    {
+      id: "minor-consent",
+      if: "#age < 18",
+      then: [{ show: "#parent-consent-wrap" }],
+      else: [{ hide: "#parent-consent-wrap" }]
+    }
+  ];
+
+  const fx = new FormFx(document.getElementById('sample-form'), {
+    rules,
+    debug: true,
+    persist: {
+      key: "formfx-demo-rules",
+      storage: "localStorage"
+    }
+  });
+
+  fx.mount();
+
+  fx.enableRuleEditor({
+    mount: document.getElementById('formfx-editor'),
+    mode: 'json'
+  });
+
+  window.fx = fx;
+</script>
+
+</body>
+</html>

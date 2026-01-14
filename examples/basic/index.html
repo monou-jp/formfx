@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FormFx Basic Example</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; line-height: 1.6; }
+        .form-group { margin-bottom: 1rem; padding: 1rem; border: 1px solid #eee; border-radius: 4px; }
+        .error { color: red; font-size: 0.8rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+        input[type="text"], input[type="number"], select { width: 100%; padding: 0.5rem; box-sizing: border-box; }
+        .repeater-item { background: #f9f9f9; padding: 1rem; margin-bottom: 0.5rem; position: relative; border-left: 4px solid #007bff; }
+        .remove-btn { color: red; cursor: pointer; }
+        .hidden { display: none; }
+        .required-mark { color: red; margin-left: 4px; }
+    </style>
+</head>
+<body>
+    <h1>FormFx v0.1 デモ</h1>
+
+    <form id="demo-form">
+        <div class="form-group">
+            <label>怪我はありますか？</label>
+            <input type="checkbox" id="hasInjury"> はい
+        </div>
+
+        <div class="form-group" data-fx-show="#hasInjury == true">
+            <label for="severity">重症度 <span class="required-mark" data-fx-show="#hasInjury == true">*</span></label>
+            <select id="severity" data-fx-required="#hasInjury == true">
+                <option value="">選択してください</option>
+                <option value="low">軽症</option>
+                <option value="mid">中等症</option>
+                <option value="high">重症</option>
+            </select>
+        </div>
+
+        <div class="form-group" data-fx-show="#hasInjury == true && (#severity == 'high' || #severity == 'mid')">
+            <label>電話連絡が必要ですか？</label>
+            <input type="checkbox" id="needCall"> はい
+        </div>
+
+        <div class="form-group" data-fx-show="#needCall == true" data-fx-clear-on-hide="true">
+            <label for="phone">電話番号</label>
+            <input type="text" id="phone" placeholder="090-0000-0000" data-fx-required="#needCall == true">
+        </div>
+
+        <div class="form-group" data-fx-repeater data-fx-name="patients" data-fx-max="3">
+            <h3>患者リスト（最大3名）</h3>
+            <div data-fx-list>
+                <!-- ここに行が追加される -->
+            </div>
+            <button type="button" data-fx-add>患者を追加</button>
+
+            <template data-fx-template>
+                <div class="repeater-item" data-fx-item>
+                    <div style="text-align: right;">
+                        <span class="remove-btn" data-fx-remove>[ 削除 ]</span>
+                    </div>
+                    <div class="form-group" data-fx-field="name">
+                        <label>氏名</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group" data-fx-field="age">
+                        <label>年齢</label>
+                        <input type="number">
+                    </div>
+                    <!-- リピーター内の条件付き表示テスト -->
+                    <div class="form-group" data-fx-field="note" data-fx-show="#hasInjury == true">
+                        <label>怪我のメモ (全体で「怪我あり」の時のみ表示)</label>
+                        <input type="text">
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <button type="submit">送信（コンソールを確認）</button>
+        </div>
+    </form>
+
+    <!-- ローカルビルドのJSを読み込む（ビルド後にパスが合うように） -->
+    <script type="module">
+        import { FormFx } from '../../dist/index.js';
+
+        const form = document.getElementById('demo-form');
+        const fx = new FormFx(form, {
+            clearOnHide: false,
+            disableOnHide: true
+        });
+        fx.mount();
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            console.log('Submitted Data:', Object.fromEntries(formData.entries()));
+            alert('送信されました（コンソールを確認してください）');
+        });
+    </script>
+</body>
+</html>

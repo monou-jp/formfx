@@ -1,0 +1,733 @@
+<!--
+FormFx Landing + Docs (Bootstrap 5)
+- 1ファイルで公開できる静的サイト例（index.html）
+- Bootstrap CDNのみ利用
+- セクション: Hero / 特徴 / インストール / クイックスタート / デモ / API / FAQ / Roadmap / Footer
+- 右上の「Docs」的なナビ + 左のサイドバーで jQuery/Alpine風の見た目を意識
+
+使い方:
+1) このファイルを index.html として配置
+2) GitHub Pages / Netlify / Cloudflare Pages などで静的ホスティング
+3) CDNのURLやnpm名、配布ファイル名(dist)は実際に合わせて変更
+-->
+
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FormFx — Declarative conditional forms for plain HTML</title>
+    <meta name="description" content="FormFxはフレームワーク不要で、data属性/JSONルールによりフォームの表示/必須/繰り返しを宣言的に制御する軽量ライブラリです。" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="FormFx" />
+    <meta property="og:description" content="Declarative conditional forms for plain HTML — no frameworks." />
+    <meta property="og:type" content="website" />
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root{
+            --fx-blue:#0b5ed7;
+            --fx-green:#20c997;
+            --fx-ink:#0f172a;
+            --fx-muted:#64748b;
+            --fx-bg:#0b1220;
+            --fx-card:#0f1a2d;
+            --fx-border: rgba(255,255,255,.12);
+        }
+
+        body {
+            color: var(--fx-ink);
+            scroll-behavior: smooth;
+        }
+
+        /* Hero */
+        .fx-hero {
+            background: radial-gradient(1200px 600px at 10% 10%, rgba(32,201,151,.20), transparent 60%),
+            radial-gradient(1000px 600px at 90% 20%, rgba(11,94,215,.25), transparent 55%),
+            linear-gradient(180deg, #070b13, #0b1220 60%, #0b1220);
+            color: #e2e8f0;
+        }
+
+        .fx-badge {
+            border: 1px solid var(--fx-border);
+            background: rgba(255,255,255,.06);
+        }
+
+        .fx-code {
+            background: #0b1220;
+            border: 1px solid rgba(255,255,255,.14);
+            border-radius: 12px;
+            color: #e2e8f0;
+            padding: 14px 14px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: .9rem;
+            overflow: auto;
+        }
+
+        .fx-kbd {
+            padding: .15rem .35rem;
+            border-radius: .35rem;
+            border: 1px solid rgba(0,0,0,.15);
+            background: #f8fafc;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: .85em;
+        }
+
+        /* Docs layout */
+        .fx-docs {
+            min-height: 100vh;
+        }
+        .fx-sidebar {
+            position: sticky;
+            top: 72px;
+            height: calc(100vh - 84px);
+            overflow: auto;
+            padding-bottom: 1rem;
+        }
+        .fx-sidebar a {
+            text-decoration: none;
+            color: #334155;
+        }
+        .fx-sidebar a:hover {
+            color: var(--fx-blue);
+        }
+        .fx-sidebar .active {
+            color: var(--fx-blue);
+            font-weight: 600;
+        }
+
+        /* Cards */
+        .fx-card {
+            border: 1px solid rgba(2,6,23,.08);
+            border-radius: 16px;
+        }
+        .fx-card .bi {
+            color: var(--fx-blue);
+        }
+
+        /* Section anchors offset for fixed navbar */
+        .fx-anchor {
+            scroll-margin-top: 90px;
+        }
+
+        /* Demo UI */
+        .fx-demo-box{
+            border: 1px solid rgba(2,6,23,.12);
+            border-radius: 16px;
+            padding: 1rem;
+            background: #fff;
+        }
+
+        /* Footer */
+        .fx-footer {
+            background: #0b1220;
+            color: #cbd5e1;
+        }
+        .fx-footer a { color: #93c5fd; }
+        .fx-footer a:hover { color: #bfdbfe; }
+
+        /* Subtle separators */
+        .fx-hr {
+            border-top: 1px solid rgba(2,6,23,.08);
+        }
+    </style>
+</head>
+
+<body>
+<!-- Top Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background:#0b1220;border-bottom:1px solid rgba(255,255,255,.10);">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="#top">
+            <span class="fw-semibold">FormFx</span>
+            <span class="badge rounded-pill fx-badge text-light">v1.x</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div id="nav" class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="#docs">Docs</a></li>
+                <li class="nav-item"><a class="nav-link" href="#demo">Demo</a></li>
+                <li class="nav-item"><a class="nav-link" href="#api">API</a></li>
+                <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+            </ul>
+
+            <div class="d-flex gap-2">
+                <a class="btn btn-outline-light btn-sm" href="https://github.com/monou-jp/formfx" target="_blank" rel="noreferrer">
+                    <i class="bi bi-github me-1"></i>GitHub
+                </a>
+                <a class="btn btn-success btn-sm" href="#install">
+                    <i class="bi bi-download me-1"></i>Install
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<header id="top" class="fx-hero py-5">
+    <div class="container py-4">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-6">
+                <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill fx-badge mb-3">
+                    <i class="bi bi-lightning-charge-fill" style="color:var(--fx-green)"></i>
+                    <span class="small">Declarative conditional forms for plain HTML — no frameworks</span>
+                </div>
+
+                <h1 class="display-5 fw-semibold mb-3">
+                    複雑な業務フォームを<br class="d-none d-md-inline"/>
+                    <span style="color:var(--fx-green)">data属性</span>と<span style="color:#93c5fd">安全な式</span>で整理する
+                </h1>
+
+                <p class="lead text-light-emphasis mb-4" style="color:#cbd5e1 !important;">
+                    FormFx は、チェックや選択に応じてフォームが動的に変わる場面（表示/必須/無効化/繰り返し入力）を、
+                    Alpine.jsやjQueryの「ifだらけ」から救うための軽量ライブラリです。
+                </p>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <a class="btn btn-success btn-lg" href="#quickstart">
+                        <i class="bi bi-rocket-takeoff me-2"></i>Quick Start
+                    </a>
+                    <a class="btn btn-outline-light btn-lg" href="#demo">
+                        <i class="bi bi-play-circle me-2"></i>Try Demo
+                    </a>
+                </div>
+
+                <div class="mt-4 d-flex flex-wrap gap-3 small" style="color:#cbd5e1;">
+                    <span><i class="bi bi-check2-circle me-1" style="color:var(--fx-green)"></i>Vanilla / TypeScript</span>
+                    <span><i class="bi bi-shield-check me-1" style="color:var(--fx-green)"></i>eval禁止（安全な評価）</span>
+                    <span><i class="bi bi-box-seam me-1" style="color:var(--fx-green)"></i>ESM / UMD / types</span>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="p-3 p-md-4 rounded-4" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="small" style="color:#cbd5e1;">attributes-first</div>
+                        <div class="small"><span class="fx-kbd">data-fx-*</span></div>
+                    </div>
+                    <pre class="fx-code mb-0"><code>&lt;input id="hasInjury" type="checkbox"&gt;
+
+&lt;section data-fx-show="#hasInjury == true"
+         data-fx-required="#hasInjury == true"&gt;
+  &lt;input name="injury_detail"&gt;
+&lt;/section&gt;
+
+&lt;script type="module"&gt;
+  import { FormFx } from "formfx";
+  new FormFx(document.querySelector("form")).mount();
+&lt;/script&gt;</code></pre>
+                </div>
+
+                <div class="row g-3 mt-3">
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-4" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);">
+                            <div class="fw-semibold mb-1">Repeater</div>
+                            <div class="small" style="color:#cbd5e1;">最大N件の入力欄追加</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-4" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);">
+                            <div class="fw-semibold mb-1">Rules</div>
+                            <div class="small" style="color:#cbd5e1;">JSONで集中管理も可能</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-3 small" style="color:#94a3b8;">
+                    ※ CDNのURL・GitHubリンク・npm名は公開後に差し替えてください。
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Features -->
+<section class="py-5">
+    <div class="container py-2">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="fx-card card h-100 p-3">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start gap-3">
+                            <i class="bi bi-braces fs-3"></i>
+                            <div>
+                                <h3 class="h5 fw-semibold mb-1">宣言的</h3>
+                                <p class="text-secondary mb-0">フォーム作者はJSを書かずに <span class="fx-kbd">data-fx-*</span> で制御できます。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="fx-card card h-100 p-3">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start gap-3">
+                            <i class="bi bi-shield-lock fs-3"></i>
+                            <div>
+                                <h3 class="h5 fw-semibold mb-1">安全な式評価</h3>
+                                <p class="text-secondary mb-0"><span class="fw-semibold">eval禁止</span>。パーサ＋評価器で条件式を安全に処理します。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="fx-card card h-100 p-3">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start gap-3">
+                            <i class="bi bi-diagram-3 fs-3"></i>
+                            <div>
+                                <h3 class="h5 fw-semibold mb-1">大規模運用</h3>
+                                <p class="text-secondary mb-0">JSONルール、デバッグ表示、履歴/監査など（拡張）を見据えた設計。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="fx-hr my-5">
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="fx-card card h-100 p-3">
+                    <div class="card-body">
+                        <div class="fw-semibold"><i class="bi bi-eye me-2"></i>show/hide</div>
+                        <div class="text-secondary small">条件で表示/非表示</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="fx-card card h-100 p-3">
+                    <div class="card-body">
+                        <div class="fw-semibold"><i class="bi bi-asterisk me-2"></i>required</div>
+                        <div class="text-secondary small">条件で必須切替</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="fx-card card h-100 p-3">
+                    <div class="card-body">
+                        <div class="fw-semibold"><i class="bi bi-toggle2-on me-2"></i>enable/disable</div>
+                        <div class="text-secondary small">入力可否の制御</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="fx-card card h-100 p-3">
+                    <div class="card-body">
+                        <div class="fw-semibold"><i class="bi bi-plus-square me-2"></i>repeater</div>
+                        <div class="text-secondary small">最大N件の追加</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Docs Layout -->
+<section id="docs" class="fx-anchor py-5 bg-body-tertiary">
+    <div class="container py-2">
+        <div class="row g-4 fx-docs">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="fx-sidebar p-3 bg-white rounded-4 border">
+                    <div class="fw-semibold mb-2">Docs</div>
+                    <div class="small text-secondary mb-3">読み始める場所</div>
+
+                    <div class="list-group list-group-flush small">
+                        <a class="list-group-item list-group-item-action" href="#install">Install</a>
+                        <a class="list-group-item list-group-item-action" href="#quickstart">Quick Start</a>
+                        <a class="list-group-item list-group-item-action" href="#attributes">Attributes</a>
+                        <a class="list-group-item list-group-item-action" href="#repeater">Repeater</a>
+                        <a class="list-group-item list-group-item-action" href="#jsonrules">JSON Rules</a>
+                        <a class="list-group-item list-group-item-action" href="#expr">Expressions</a>
+                        <a class="list-group-item list-group-item-action" href="#api">API</a>
+                        <a class="list-group-item list-group-item-action" href="#faq">FAQ</a>
+                    </div>
+
+                    <hr class="fx-hr my-3">
+
+                    <div class="small">
+                        <div class="fw-semibold mb-2">Links</div>
+                        <a href="https://www.npmjs.com/package/formfx" target="_blank" rel="noreferrer" class="d-block mb-1">
+                            <i class="bi bi-box-seam me-1"></i>npm
+                        </a>
+                        <a href="https://github.com/monou-jp/formfx" target="_blank" rel="noreferrer" class="d-block">
+                            <i class="bi bi-github me-1"></i>GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="col-lg-9">
+                <!-- Install -->
+                <div id="install" class="fx-anchor bg-white rounded-4 border p-4 mb-4">
+                    <h2 class="h4 fw-semibold mb-3">Install</h2>
+                    <p class="text-secondary mb-3">npm または CDN で導入できます。</p>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="fw-semibold mb-2">npm</div>
+                            <pre class="fx-code"><code>npm install formfx</code></pre>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="fw-semibold mb-2">CDN (UMD)</div>
+                            <pre class="fx-code"><code>&lt;script src="https://unpkg.com/formfx/dist/formfx.umd.js"&gt;&lt;/script&gt;</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning mt-3 mb-0">
+                        <div class="small">
+                            CDNパス（distファイル名）は実際のビルド出力に合わせて調整してください。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quickstart -->
+                <div id="quickstart" class="fx-anchor bg-white rounded-4 border p-4 mb-4">
+                    <h2 class="h4 fw-semibold mb-3">Quick Start</h2>
+                    <p class="text-secondary">フォーム内で <span class="fx-kbd">data-fx-show</span> や <span class="fx-kbd">data-fx-required</span> を使い、最後に FormFx を初期化します。</p>
+
+                    <pre class="fx-code"><code>&lt;form id="incident"&gt;
+  &lt;label&gt;
+    &lt;input id="hasInjury" type="checkbox"&gt;
+    傷害あり
+  &lt;/label&gt;
+
+  &lt;section data-fx-show="#hasInjury == true"
+           data-fx-required="#hasInjury == true"&gt;
+    &lt;label&gt;詳細
+      &lt;input name="injury_detail"&gt;
+    &lt;/label&gt;
+  &lt;/section&gt;
+
+  &lt;button type="submit"&gt;送信&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;script type="module"&gt;
+  import { FormFx } from "formfx";
+  const fx = new FormFx(document.querySelector("#incident"), {
+    disableOnHide: true
+  });
+  fx.mount();
+&lt;/script&gt;</code></pre>
+                </div>
+
+                <!-- Attributes -->
+                <div id="attributes" class="fx-anchor bg-white rounded-4 border p-4 mb-4">
+                    <h2 class="h4 fw-semibold mb-3">Attributes</h2>
+
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead>
+                            <tr>
+                                <th>属性</th>
+                                <th>説明</th>
+                                <th>例</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><span class="fx-kbd">data-fx-show</span></td>
+                                <td class="text-secondary">式が true のとき表示。false のとき非表示。</td>
+                                <td><code>#hasInjury == true</code></td>
+                            </tr>
+                            <tr>
+                                <td><span class="fx-kbd">data-fx-required</span></td>
+                                <td class="text-secondary">式が true のとき required を付与。</td>
+                                <td><code>#severity == 'high'</code></td>
+                            </tr>
+                            <tr>
+                                <td><span class="fx-kbd">data-fx-disabled</span></td>
+                                <td class="text-secondary">式が true のとき disabled を付与。</td>
+                                <td><code>#mode == 'readonly'</code></td>
+                            </tr>
+                            <tr>
+                                <td><span class="fx-kbd">data-fx-clear-on-hide</span></td>
+                                <td class="text-secondary">非表示になったとき値をクリア（オプション）。</td>
+                                <td><code>true</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="alert alert-info mb-0">
+                        <div class="small">
+                            非表示時に required が残るとHTML5バリデーションで送信できないことがあります。
+                            <span class="fw-semibold">disableOnHide: true</span> を推奨します。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Repeater -->
+                <div id="repeater" class="fx-anchor bg-white rounded-4 border p-4 mb-4">
+                    <h2 class="h4 fw-semibold mb-3">Repeater</h2>
+                    <p class="text-secondary">最大N件の入力欄を追加できます（例：関連患者、関与スタッフ、要因など）。</p>
+
+                    <pre class="fx-code"><code>&lt;div data-fx-repeater data-fx-name="patients" data-fx-max="3"&gt;
+  &lt;button type="button" data-fx-add&gt;追加&lt;/button&gt;
+  &lt;div data-fx-list&gt;&lt;/div&gt;
+
+  &lt;template data-fx-template&gt;
+    &lt;div data-fx-item&gt;
+      &lt;input data-fx-field name="id" placeholder="患者ID"&gt;
+      &lt;input data-fx-field name="note" placeholder="備考"&gt;
+      &lt;button type="button" data-fx-remove&gt;削除&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/template&gt;
+&lt;/div&gt;</code></pre>
+
+                    <p class="small text-secondary mb-0">
+                        nameの採番戦略（例：<code>patients[0].id</code>）は設定で変更可能にする設計が推奨です。
+                    </p>
+                </div>
+
+                <!-- JSON Rules -->
+                <div id="jsonrules" class="fx-anchor bg-white rounded-4 border p-4 mb-4">
+                    <h2 class="h4 fw-semibold mb-3">JSON Rules</h2>
+                    <p class="text-secondary">大規模フォームではルールを一箇所で集中管理できます（高度な使い方）。</p>
+                    <pre class="fx-code"><code>const fx = new FormFx(form, {
+  rules: [
+    {
+      id: "injury-rule",
+      if: "#hasInjury == true",
+      then: [
+        { show: "#injuryBlock" },
+        { require: "#injuryDetail" }
+      ],
+      else: [
+        { hide: "#injuryBlock" }
+      ]
+    }
+  ]
+});
+fx.mount();</code></pre>
+                </div>
+
+                <!-- Expressions -->
+                <div id="expr" class="fx-anchor bg-white rounded-4 border p-4 mb-4">
+                    <h2 class="h4 fw-semibold mb-3">Expressions</h2>
+                    <p class="text-secondary">例：チェックボックス、セレクト、文字列比較など。</p>
+                    <pre class="fx-code"><code>#hasInjury == true
+#severity == 'high' && #needCall == true
+(#type == 'drug' || #type == 'device')</code></pre>
+                    <div class="small text-secondary">
+                        ※ v1.1以降で <code>empty()</code> や <code>len()</code> などの関数拡張も可能です（実装段階に合わせて追記）。
+                    </div>
+                </div>
+
+                <!-- Demo -->
+                <div id="demo" class="fx-anchor bg-white rounded-4 border p-4 mb-4">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                        <h2 class="h4 fw-semibold mb-0">Demo (Static Preview)</h2>
+                        <span class="badge text-bg-secondary">※ このページはデモUIのみ（FormFx実行は未接続）</span>
+                    </div>
+                    <p class="text-secondary">
+                        公開後は、ここに FormFx のUMDを読み込み、実際に動くデモを載せると採用率が上がります。
+                    </p>
+
+                    <div class="fx-demo-box">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">傷害あり</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="demoHasInjury">
+                                <label class="form-check-label" for="demoHasInjury">チェックすると詳細が必須（想定）</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">傷害の詳細</label>
+                            <input class="form-control" placeholder="例：転倒により擦過傷" />
+                            <div class="form-text">※ 実際は data-fx-show / data-fx-required で制御</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">関連患者（最大3件）</label>
+                            <div class="d-flex gap-2 mb-2">
+                                <button class="btn btn-outline-primary btn-sm" type="button">追加（想定）</button>
+                                <button class="btn btn-outline-secondary btn-sm" type="button">削除（想定）</button>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-md-4"><input class="form-control" placeholder="患者ID" /></div>
+                                <div class="col-md-8"><input class="form-control" placeholder="備考" /></div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-success" type="button">送信（想定）</button>
+                    </div>
+
+                    <hr class="fx-hr my-4">
+
+                    <div class="small text-secondary">
+                        <i class="bi bi-lightbulb me-1"></i>
+                        公開後に「動くデモ」を載せる場合は、UMDビルドを読み込んでこのセクションだけ FormFx を初期化してください。
+                    </div>
+                </div>
+
+                <!-- API -->
+                <div id="api" class="fx-anchor bg-white rounded-4 border p-4 mb-4">
+                    <h2 class="h4 fw-semibold mb-3">API</h2>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="fw-semibold mb-2">Constructor</div>
+                            <pre class="fx-code"><code>new FormFx(formElement, options)</code></pre>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="fw-semibold mb-2">Lifecycle</div>
+                            <pre class="fx-code"><code>fx.mount()
+fx.destroy()</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <div class="fw-semibold mb-2">Options (例)</div>
+                        <pre class="fx-code"><code>{
+  disableOnHide: true,  // 非表示時に配下をdisabledにして送信/検証から外す
+  clearOnHide: false,   // 非表示時に値をクリア
+  // rules: [...],       // JSON rules（高度）
+  // debug: true         // デバッグ（高度）
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- FAQ -->
+                <div id="faq" class="fx-anchor bg-white rounded-4 border p-4 mb-4">
+                    <h2 class="h4 fw-semibold mb-3">FAQ</h2>
+
+                    <div class="accordion" id="faqAcc">
+                        <div class="accordion-item">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#f1">
+                                    なぜ hidden ではなく disabled を使うのですか？
+                                </button>
+                            </h3>
+                            <div id="f1" class="accordion-collapse collapse show" data-bs-parent="#faqAcc">
+                                <div class="accordion-body text-secondary">
+                                    非表示になった入力が required のままだと、HTML5バリデーションで送信できないことがあります。
+                                    <span class="fw-semibold">disableOnHide: true</span> は、非表示の入力を送信・検証対象から外すための安全策です。
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f2">
+                                    Alpine.js とどう違いますか？
+                                </button>
+                            </h3>
+                            <div id="f2" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+                                <div class="accordion-body text-secondary">
+                                    Alpine.js は手軽ですが、分岐が増えるとロジックが散らばりがちです。
+                                    FormFx は「条件式と効果」を宣言的にまとめ、保守しやすい形に寄せます。
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f3">
+                                    React/Vueを使わない理由でも採用できますか？
+                                </button>
+                            </h3>
+                            <div id="f3" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+                                <div class="accordion-body text-secondary">
+                                    既存のHTMLを壊したくない、導入コストを抑えたい、業務系で制約がある、といったケースを想定しています。
+                                    FormFx はフレームワーク不要です。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Roadmap -->
+                <div class="bg-white rounded-4 border p-4">
+                    <h2 class="h4 fw-semibold mb-3">Roadmap</h2>
+                    <ul class="text-secondary mb-0">
+                        <li>v1.x: ルール表現拡張 / A11y / Repeater強化 / 運用機能</li>
+                        <li>v2.x: 状態モデル、拡張可能な式仕様、運用・監査の高度化</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="fx-footer py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="h5 fw-semibold mb-2">FormFx</div>
+                <div class="text-secondary" style="color:#cbd5e1 !important;">
+                    Declarative conditional forms for plain HTML — no frameworks.
+                </div>
+                <div class="small mt-3" style="color:#94a3b8;">
+                    © <span id="year"></span> FormFx Contributors
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="fw-semibold mb-2">Project</div>
+                        <a class="d-block mb-1" href="https://github.com/monou-jp/formfx" target="_blank" rel="noreferrer">GitHub</a>
+                        <a class="d-block mb-1" href="https://www.npmjs.com/package/formfx" target="_blank" rel="noreferrer">npm</a>
+                        <a class="d-block" href="#docs">Docs</a>
+                    </div>
+                    <div class="col-6">
+                        <div class="fw-semibold mb-2">Community</div>
+                        <a class="d-block mb-1" href="https://github.com/monou-jp/formfx/issues" target="_blank" rel="noreferrer">Issues</a>
+                        <a class="d-block" href="https://github.com/monou-jp/formfx/discussions" target="_blank" rel="noreferrer">Discussions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="fx-hr my-4" style="border-top-color:rgba(255,255,255,.12);">
+
+        <div class="small" style="color:#94a3b8;">
+            Bootstrap is used under its license. This site is a template; customize links, CDN paths, and examples for your release.
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // 追加の軽いUX：現在位置に応じてサイドバーをそれっぽく強調（簡易）
+    (function(){
+        const links = Array.from(document.querySelectorAll(".fx-sidebar .list-group a"));
+        const targets = links
+            .map(a => document.querySelector(a.getAttribute("href")))
+            .filter(Boolean);
+
+        const onScroll = () => {
+            const y = window.scrollY + 120;
+            let current = null;
+            for (const t of targets) {
+                if (t.offsetTop <= y) current = t;
+            }
+            links.forEach(a => a.classList.remove("active"));
+            if (current) {
+                const active = links.find(a => a.getAttribute("href") === "#" + current.id);
+                if (active) active.classList.add("active");
+            }
+        };
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+    })();
+</script>
+</body>
+</html>

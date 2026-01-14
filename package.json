@@ -1,0 +1,66 @@
+{
+  "name": "formfx",
+  "version": "1.0.0",
+  "description": "Powerful & Lightweight form control library with data attributes and safe expression evaluation.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./editor": {
+      "types": "./dist/editor.d.ts",
+      "import": "./dist/editor.js",
+      "require": "./dist/editor.cjs"
+    },
+    "./editor.css": "./dist/editor.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:e2e": "playwright test",
+    "prepublishOnly": "npm run lint && npm run test && npm run build"
+  },
+  "keywords": [
+    "form",
+    "validation",
+    "dynamic-form",
+    "typescript",
+    "low-code",
+    "declarative"
+  ],
+  "author": "https://monou.jp/",
+  "license": "BSD-3-Clause",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/monou-jp/formfx"
+  },
+  "bugs": {
+    "url": "https://github.com/monou-jp/formfx/issues"
+  },
+  "homepage": "https://github.com/monou-jp/formfx#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/jsdom": "^27.0.0",
+    "@vitest/browser": "^4.0.17",
+    "jsdom": "^27.4.0",
+    "playwright": "^1.57.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^4.0.17"
+  }
+}

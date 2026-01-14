@@ -1,0 +1,74 @@
+# =========================
+# Node / npm / pnpm / yarn
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# yarn / pnpm を使わないのでignore
+yarn.lock
+pnpm-lock.yaml
+
+# =========================
+# Build outputs
+# =========================
+dist/
+build/
+.esbuild/
+.tmp/
+.temp/
+
+# tsup / bundler cache
+.tsup/
+.vite/
+.parcel-cache/
+
+# =========================
+# TypeScript
+# =========================
+*.tsbuildinfo
+
+# =========================
+# Test / Coverage
+# =========================
+coverage/
+playwright-report/
+test-results/
+
+# =========================
+# Environment / Secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+Thumbs.db
+
+# JetBrains (WebStorm / IntelliJ)
+.idea/
+*.iml
+
+# =========================
+# Logs / Runtime
+# =========================
+logs/
+*.log
+
+# =========================
+# GitHub Pages / Site build
+# =========================
+# docs/ をそのまま公開する場合は ignore しない
+#site/dist/
+
+# =========================
+# Misc
+# =========================
+*.swp
+*.swo
+*.bak
