@@ -239,7 +239,7 @@ export class DebugPanel {
       }
       
       let effectInfo = `${rule.type} ${this.getSelector(rule.element)}`;
-      if (!result && result !== 'error' && !rule.disabled) {
+      if (result !== true && result !== 'error' && !rule.disabled) {
         effectInfo = `<span class="effect-skipped">${effectInfo} (skipped)</span>`;
       }
       if (rule.disabled) {

@@ -44,7 +44,7 @@ export function createRules(formElement: HTMLElement, options: FormFxOptions = {
         const addEffectRules = (effects: JSONEffect[], isElse: boolean) => {
           effects.forEach(effect => {
             Object.entries(effect).forEach(([key, selector]) => {
-              if (!selector) return;
+              if (typeof selector !== 'string' || !selector) return;
               let type = (key === 'require' ? 'required' : key) as EffectType;
               let expression = jsonRule.if;
               let finalAst = ast;
@@ -60,8 +60,9 @@ export function createRules(formElement: HTMLElement, options: FormFxOptions = {
                 expression = `!(${expression})`;
               }
 
-              const elements = formElement.querySelectorAll<HTMLElement>(selector);
-              elements.forEach(el => {
+              const elements = formElement.querySelectorAll(selector);
+              elements.forEach(node => {
+                const el = node as HTMLElement;
                 rules.push({
                   id: jsonRule.id,
                   element: el,

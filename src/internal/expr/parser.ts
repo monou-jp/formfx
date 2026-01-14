@@ -1,4 +1,4 @@
-import { ASTNode, Token } from '../types';
+import { ASTNode, Token } from '../../types';
 
 /**
  * 簡易的な再帰下降構文解析器

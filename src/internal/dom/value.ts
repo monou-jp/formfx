@@ -34,8 +34,10 @@ export function clearValue(el: HTMLElement): void {
     } else {
       el.value = '';
     }
-  } else if (el instanceof HTMLSelectElement || el instanceof HTMLTextAreaElement) {
+  } else if (el instanceof HTMLSelectElement) {
     el.selectedIndex = -1;
+    el.value = '';
+  } else if (el instanceof HTMLTextAreaElement) {
     el.value = '';
   } else {
     // コンテナの場合は配下の要素をクリア

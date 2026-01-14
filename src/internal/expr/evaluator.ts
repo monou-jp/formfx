@@ -1,4 +1,4 @@
-import { ASTNode, FXValue, EvaluationContext } from '../types';
+import { ASTNode, FXValue, EvaluationContext } from '../../types';
 
 export function evaluate(node: ASTNode, context: EvaluationContext): FXValue {
   switch (node.type) {
@@ -17,7 +17,7 @@ export function evaluate(node: ASTNode, context: EvaluationContext): FXValue {
       if (node.operator === '!') {
         return !evaluate(node.argument, context);
       }
-      throw new Error(`Unknown unary operator: ${node.operator}`);
+      throw new Error(`Unknown unary operator: ${(node as any).operator}`);
 
     case 'BinaryExpression': {
       const left = evaluate(node.left, context);
@@ -52,12 +52,12 @@ export function evaluate(node: ASTNode, context: EvaluationContext): FXValue {
       if (!func) {
         throw new Error(`Unknown function: ${node.callee}`);
       }
-      const args = node.arguments.map(arg => evaluate(arg, context));
+      const args = node.arguments.map((arg: ASTNode) => evaluate(arg, context));
       return func(...args);
     }
 
     case 'ArrayExpression': {
-      return node.elements.map(el => evaluate(el, context));
+      return node.elements.map((el: ASTNode) => evaluate(el, context));
     }
 
     default:

@@ -1,6 +1,6 @@
-import { FXValue, JSONRule, EffectType, FormFxOptions, PersistOptions, RuleEditorOptions } from './public-types';
+import { FXValue, JSONRule, JSONEffect, EffectType, FormFxOptions, PersistOptions, RuleEditorOptions } from './public-types';
 
-export { FXValue, JSONRule, EffectType, FormFxOptions, PersistOptions, RuleEditorOptions };
+export { FXValue, JSONRule, JSONEffect, EffectType, FormFxOptions, PersistOptions, RuleEditorOptions };
 
 export interface Token {
   type: 'IDENTIFIER' | 'NUMBER' | 'STRING' | 'BOOLEAN' | 'OPERATOR' | 'PAREN' | 'COMMA' | 'BRACKET';

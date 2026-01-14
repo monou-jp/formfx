@@ -1,4 +1,4 @@
-import { Token } from '../types';
+import { Token } from '../../types';
 
 export function tokenize(input: string): Token[] {
   const tokens: Token[] = [];
