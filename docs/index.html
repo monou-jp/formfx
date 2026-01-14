@@ -1,16 +1,3 @@
-<!--
-FormFx Landing + Docs (Bootstrap 5)
-- 1ファイルで公開できる静的サイト例（index.html）
-- Bootstrap CDNのみ利用
-- セクション: Hero / 特徴 / インストール / クイックスタート / デモ / API / FAQ / Roadmap / Footer
-- 右上の「Docs」的なナビ + 左のサイドバーで jQuery/Alpine風の見た目を意識
-
-使い方:
-1) このファイルを index.html として配置
-2) GitHub Pages / Netlify / Cloudflare Pages などで静的ホスティング
-3) CDNのURLやnpm名、配布ファイル名(dist)は実際に合わせて変更
--->
-
 <!doctype html>
 <html lang="ja">
 <head>
@@ -28,6 +15,9 @@ FormFx Landing + Docs (Bootstrap 5)
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <script src="https://unpkg.com/formfx@1.0.2/dist/index.global.js"></script>
+
 
     <style>
         :root{
@@ -144,7 +134,7 @@ FormFx Landing + Docs (Bootstrap 5)
     <div class="container">
         <a class="navbar-brand d-flex align-items-center gap-2" href="#top">
             <span class="fw-semibold">FormFx</span>
-            <span class="badge rounded-pill fx-badge text-light">v1.x</span>
+            <span class="badge rounded-pill fx-badge text-light">v1.0</span>
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
@@ -178,7 +168,7 @@ FormFx Landing + Docs (Bootstrap 5)
             <div class="col-lg-6">
                 <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill fx-badge mb-3">
                     <i class="bi bi-lightning-charge-fill" style="color:var(--fx-green)"></i>
-                    <span class="small">Declarative conditional forms for plain HTML — no frameworks</span>
+                    <span class="small">フレームワーク不要。HTML属性だけで実現する、宣言的な動的フォーム</span>
                 </div>
 
                 <h1 class="display-5 fw-semibold mb-3">
@@ -187,8 +177,9 @@ FormFx Landing + Docs (Bootstrap 5)
                 </h1>
 
                 <p class="lead text-light-emphasis mb-4" style="color:#cbd5e1 !important;">
-                    FormFx は、チェックや選択に応じてフォームが動的に変わる場面（表示/必須/無効化/繰り返し入力）を、
-                    Alpine.jsやjQueryの「ifだらけ」から救うための軽量ライブラリです。
+                    FormFx は、チェックや選択に応じてフォームが動的に変わる場面を、
+                    Alpine.jsやjQueryの「ifだらけ」から救うための軽量ライブラリです。<br>
+                    <strong>eval不使用でCSP環境にも対応</strong>し、安全かつ宣言的にフォームを整理します。
                 </p>
 
                 <div class="d-flex flex-wrap gap-2">
@@ -211,7 +202,7 @@ FormFx Landing + Docs (Bootstrap 5)
                 <div class="p-3 p-md-4 rounded-4" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);">
                     <div class="d-flex align-items-center justify-content-between mb-2">
                         <div class="small" style="color:#cbd5e1;">attributes-first</div>
-                        <div class="small"><span class="fx-kbd">data-fx-*</span></div>
+                        <div class="small"><span class="fx-kbd" style="background-color: gray;">data-fx-*</span></div>
                     </div>
                     <pre class="fx-code mb-0"><code>&lt;input id="hasInjury" type="checkbox"&gt;
 
@@ -239,10 +230,6 @@ FormFx Landing + Docs (Bootstrap 5)
                             <div class="small" style="color:#cbd5e1;">JSONで集中管理も可能</div>
                         </div>
                     </div>
-                </div>
-
-                <div class="mt-3 small" style="color:#94a3b8;">
-                    ※ CDNのURL・GitHubリンク・npm名は公開後に差し替えてください。
                 </div>
             </div>
         </div>
@@ -382,44 +369,31 @@ FormFx Landing + Docs (Bootstrap 5)
                         </div>
                         <div class="col-md-6">
                             <div class="fw-semibold mb-2">CDN (UMD)</div>
-                            <pre class="fx-code"><code>&lt;script src="https://unpkg.com/formfx/dist/formfx.umd.js"&gt;&lt;/script&gt;</code></pre>
+                            <pre class="fx-code"><code>&lt;script src="https://unpkg.com/formfx@1.0.2/dist/index.global.js"&gt;&lt;/script&gt;</code></pre>
                         </div>
                     </div>
 
-                    <div class="alert alert-warning mt-3 mb-0">
-                        <div class="small">
-                            CDNパス（distファイル名）は実際のビルド出力に合わせて調整してください。
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Quickstart -->
                 <div id="quickstart" class="fx-anchor bg-white rounded-4 border p-4 mb-4">
                     <h2 class="h4 fw-semibold mb-3">Quick Start</h2>
-                    <p class="text-secondary">フォーム内で <span class="fx-kbd">data-fx-show</span> や <span class="fx-kbd">data-fx-required</span> を使い、最後に FormFx を初期化します。</p>
+                    <p class="text-secondary">CDN等でライブラリを読み込み、対象のフォームに対して <code>new FormFx(el).mount()</code> を呼び出すだけで利用できます。</p>
 
-                    <pre class="fx-code"><code>&lt;form id="incident"&gt;
-  &lt;label&gt;
-    &lt;input id="hasInjury" type="checkbox"&gt;
-    傷害あり
-  &lt;/label&gt;
+                    <pre class="fx-code"><code>&lt;!-- 1. ライブラリの読み込み --&gt;
+&lt;script src="https://unpkg.com/formfx/dist/index.global.js"&gt;&lt;/script&gt;
 
-  &lt;section data-fx-show="#hasInjury == true"
-           data-fx-required="#hasInjury == true"&gt;
-    &lt;label&gt;詳細
-      &lt;input name="injury_detail"&gt;
-    &lt;/label&gt;
-  &lt;/section&gt;
-
-  &lt;button type="submit"&gt;送信&lt;/button&gt;
+&lt;!-- 2. HTML属性でルールを記述 --&gt;
+&lt;form id="sample-form"&gt;
+  &lt;input id="check" type="checkbox"&gt; 承諾する
+  &lt;div data-fx-show="#check == true"&gt;
+    &lt;input name="msg" data-fx-required="#check == true"&gt;
+  &lt;/div&gt;
 &lt;/form&gt;
 
-&lt;script type="module"&gt;
-  import { FormFx } from "formfx";
-  const fx = new FormFx(document.querySelector("#incident"), {
-    disableOnHide: true
-  });
-  fx.mount();
+&lt;!-- 3. 初期化 --&gt;
+&lt;script&gt;
+  new FormFx(document.querySelector("#sample-form")).mount();
 &lt;/script&gt;</code></pre>
                 </div>
 
@@ -522,56 +496,75 @@ fx.mount();</code></pre>
 #severity == 'high' && #needCall == true
 (#type == 'drug' || #type == 'device')</code></pre>
                     <div class="small text-secondary">
-                        ※ v1.1以降で <code>empty()</code> や <code>len()</code> などの関数拡張も可能です（実装段階に合わせて追記）。
+                        ※ v1.1以降で <code>empty()</code> や <code>len()</code> などの関数拡張の実装も予定しています。
                     </div>
                 </div>
 
                 <!-- Demo -->
                 <div id="demo" class="fx-anchor bg-white rounded-4 border p-4 mb-4">
                     <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
-                        <h2 class="h4 fw-semibold mb-0">Demo (Static Preview)</h2>
-                        <span class="badge text-bg-secondary">※ このページはデモUIのみ（FormFx実行は未接続）</span>
+                        <h2 class="h4 fw-semibold mb-0">Demo</h2>
+                        <span class="badge text-bg-success">FormFx Active</span>
                     </div>
                     <p class="text-secondary">
-                        公開後は、ここに FormFx のUMDを読み込み、実際に動くデモを載せると採用率が上がります。
+                        実際に動作するデモです。チェックボックスや選択肢に応じて表示が切り替わります。
                     </p>
 
-                    <div class="fx-demo-box">
+                    <form id="demo-form" class="fx-demo-box">
                         <div class="mb-3">
                             <label class="form-label fw-semibold">傷害あり</label>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="demoHasInjury">
-                                <label class="form-check-label" for="demoHasInjury">チェックすると詳細が必須（想定）</label>
+                                <!-- id="demoHasInjury" を確実に設定 -->
+                                <input class="form-check-input" type="checkbox" id="demoHasInjury" name="has_injury">
+                                <label class="form-check-label" for="demoHasInjury">チェックすると詳細が表示されます</label>
                             </div>
                         </div>
 
-                        <div class="mb-3">
+                        <!-- 条件式の ID 参照を確認 -->
+                        <div class="mb-3" data-fx-show="#demoHasInjury == true">
                             <label class="form-label fw-semibold">傷害の詳細</label>
-                            <input class="form-control" placeholder="例：転倒により擦過傷" />
-                            <div class="form-text">※ 実際は data-fx-show / data-fx-required で制御</div>
+                            <input class="form-control" name="injury_detail" id="injuryDetail" placeholder="例：転倒により擦過傷" data-fx-required="#demoHasInjury == true" />
+                            <div class="form-text">※ 傷害ありの場合、入力が必須になります。</div>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3" data-fx-repeater data-fx-name="patients" data-fx-max="3">
                             <label class="form-label fw-semibold">関連患者（最大3件）</label>
-                            <div class="d-flex gap-2 mb-2">
-                                <button class="btn btn-outline-primary btn-sm" type="button">追加（想定）</button>
-                                <button class="btn btn-outline-secondary btn-sm" type="button">削除（想定）</button>
+                            <div class="mb-2">
+                                <button class="btn btn-outline-primary btn-sm" type="button" data-fx-add>
+                                    <i class="bi bi-plus-circle me-1"></i>患者を追加
+                                </button>
                             </div>
-                            <div class="row g-2">
-                                <div class="col-md-4"><input class="form-control" placeholder="患者ID" /></div>
-                                <div class="col-md-8"><input class="form-control" placeholder="備考" /></div>
+                            <div class="d-flex flex-column gap-2" data-fx-list>
+                                <!-- Dynamic rows -->
                             </div>
+
+                            <template data-fx-template>
+                                <div class="row g-2 p-2 border rounded bg-light position-relative mb-2" data-fx-item>
+                                    <div class="col-md-4">
+                                        <input class="form-control form-control-sm" data-fx-field name="id" placeholder="患者ID" required />
+                                    </div>
+                                    <div class="col-md-7">
+                                        <input class="form-control form-control-sm" data-fx-field name="note" placeholder="備考" />
+                                    </div>
+                                    <div class="col-md-1 d-flex align-items-center justify-content-end">
+                                        <button type="button" class="btn btn-link text-danger p-0" data-fx-remove>
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </template>
                         </div>
 
-                        <button class="btn btn-success" type="button">送信（想定）</button>
-                    </div>
+                        <button class="btn btn-success w-100 mb-3" type="submit">送信内容をコンソールに表示</button>
+
+                        <div class="form-check form-switch small">
+                            <input class="form-check-input" type="checkbox" role="switch" id="debug-toggle" >
+                            <label class="form-check-label text-secondary" for="debug-toggle">デバッグパネルを表示</label>
+                        </div>
+                    </form>
 
                     <hr class="fx-hr my-4">
 
-                    <div class="small text-secondary">
-                        <i class="bi bi-lightbulb me-1"></i>
-                        公開後に「動くデモ」を載せる場合は、UMDビルドを読み込んでこのセクションだけ FormFx を初期化してください。
-                    </div>
                 </div>
 
                 <!-- API -->
@@ -706,7 +699,7 @@ fx.destroy()</code></pre>
 <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // 追加の軽いUX：現在位置に応じてサイドバーをそれっぽく強調（簡易）
+    // Side navigation highlighting
     (function(){
         const links = Array.from(document.querySelectorAll(".fx-sidebar .list-group a"));
         const targets = links
@@ -728,6 +721,32 @@ fx.destroy()</code></pre>
         window.addEventListener("scroll", onScroll, { passive: true });
         onScroll();
     })();
+</script>
+<script>
+    // Initialize FormFx for the demo form
+    const demoForm = document.querySelector("#demo-form");
+    if (demoForm && typeof FormFx === 'function') {
+        const fx = new FormFx(demoForm, {
+            disableOnHide: true
+        });
+        fx.mount();
+
+        // Demo submit handler
+        demoForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const data = new FormData(demoForm);
+            console.log('FormFx Demo Data:', Object.fromEntries(data.entries()));
+            alert('送信されました！');
+        });
+
+        // Debug panel toggle
+        const debugToggle = document.querySelector("#debug-toggle");
+        if (debugToggle) {
+            debugToggle.addEventListener('change', (e) => {
+                fx.setDebug(e.target.checked);
+            });
+        }
+    }
 </script>
 </body>
 </html>

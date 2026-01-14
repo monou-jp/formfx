@@ -3,14 +3,17 @@ import { defineConfig } from 'tsup';
 export default defineConfig({
   entry: {
     index: 'src/index.ts',
-    editor: 'src/editor/RuleEditor.ts'
   },
-  format: ['esm', 'cjs'],
+  format: ['cjs', 'esm', 'iife'], // iife (即時実行関数) を含める
+  globalName: 'FormFx',          // window.FormFx に登録
   dts: true,
   clean: true,
   minify: true,
   sourcemap: true,
-  splitting: true,
-  treeshake: true,
-  injectStyle: false, // CSSは別途出力
+  splitting: false,              // global版では必須
+  outExtension({ format }) {
+    return {
+      js: format === 'iife' ? '.global.js' : '.js',
+    };
+  },
 });

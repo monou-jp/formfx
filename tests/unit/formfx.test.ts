@@ -108,4 +108,35 @@ describe('FormFx Integration', () => {
 
     fx.destroy();
   });
+
+  it('can toggle debug panel visibility with setDebug', () => {
+    container.innerHTML = `
+      <form id="myform">
+        <input type="text" name="test">
+      </form>
+    `;
+    const form = container.querySelector('#myform') as HTMLFormElement;
+    const fx = new FormFx(form, { debug: false });
+    fx.mount();
+
+    // 最初はデバッグパネルが存在しない
+    let panel = document.getElementById('formfx-debug-panel');
+    expect(panel).toBeNull();
+
+    // デバッグを有効化
+    fx.setDebug(true);
+    panel = document.getElementById('formfx-debug-panel');
+    expect(panel).not.toBeNull();
+    expect(panel?.style.display).not.toBe('none');
+
+    // デバッグを無効化 (hide)
+    fx.setDebug(false);
+    expect(panel?.style.display).toBe('none');
+
+    // 再度有効化 (show)
+    fx.setDebug(true);
+    expect(panel?.style.display).toBe('block');
+
+    fx.destroy();
+  });
 });

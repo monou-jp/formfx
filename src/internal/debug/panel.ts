@@ -273,4 +273,16 @@ export class DebugPanel {
       this.container.parentNode.removeChild(this.container);
     }
   }
+
+  show() {
+    if (this.container) {
+      this.container.style.display = 'block';
+    }
+  }
+
+  hide() {
+    if (this.container) {
+      this.container.style.display = 'none';
+    }
+  }
 }

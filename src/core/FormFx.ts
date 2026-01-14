@@ -128,6 +128,29 @@ export class FormFx {
   }
 
   /**
+   * デバッグパネルの表示/非表示を切り替える (v0.4.1)
+   */
+  setDebug(enabled: boolean): void {
+    this.options.debug = enabled;
+    if (enabled) {
+      if (!this.debugPanel) {
+        this.debugPanel = new DebugPanel();
+        if (this.options.persist) {
+          this.debugPanel.setPersistInfo(this.options.persist);
+        }
+        // 初回評価を反映させる
+        this.evaluate();
+      } else {
+        this.debugPanel.show();
+      }
+    } else {
+      if (this.debugPanel) {
+        this.debugPanel.hide();
+      }
+    }
+  }
+
+  /**
    * Rule Editor を有効化する (v0.4)
    */
   async enableRuleEditor(options: RuleEditorOptions): Promise<void> {
